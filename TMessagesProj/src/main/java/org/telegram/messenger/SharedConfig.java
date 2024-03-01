@@ -1427,21 +1427,17 @@ public class SharedConfig {
     }
 
     public static void setProxyEnable(boolean enable) {
-        if (enable && currentProxy == null) {
-            enable = false;
-        }
 
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
-        preferences.edit().putBoolean("proxy_enabled", enable).apply();
+
+        preferences.edit().putBoolean("proxy_enabled", enable).commit();
 
         ProxyInfo finalInfo = currentProxy;
         boolean finalEnable = enable;
         UIUtil.runOnIoDispatcher(() -> {
-            if (finalEnable) {
-                ConnectionsManager.setProxySettings(true, finalInfo.address, finalInfo.port, finalInfo.username, finalInfo.password, finalInfo.secret);
-            } else {
-                ConnectionsManager.setProxySettings(false, "", 0, "", "", "");
-            }
+
+            ConnectionsManager.setProxySettings(enable, finalInfo.address, finalInfo.port, finalInfo.username, finalInfo.password, finalInfo.secret);
+
             UIUtil.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.proxySettingsChanged));
 
         });
