@@ -29560,7 +29560,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         AlertUtil.showConfirm(getParentActivity(),
                                 LocaleController.getString("ImportProxyList", R.string.ImportProxyList),
                                 R.drawable.menu_secret, LocaleController.getString("Import", R.string.Import),
-                                false, () -> {});
+                                false, () -> {
+                                    String status = ProxyListActivity.processProxyListFile(getParentActivity(), finalLocFile1);
+                                    if (!StrUtil.isBlank(status)) {
+                                        presentFragment(new ProxyListActivity(status));
+                                    }
+                                });
 
                     } else if (locFile.getName().toLowerCase().endsWith(".nekox-stickers.json")) {
 
@@ -35008,7 +35013,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 AlertUtil.showConfirm(getParentActivity(),
                                         LocaleController.getString("ImportProxyList", R.string.ImportProxyList),
                                         R.drawable.menu_secret, LocaleController.getString("Import", R.string.Import),
-                                        false, () -> {});
+                                        false, () -> {
+                                            String status = ProxyListActivity.processProxyListFile(getParentActivity(), finalLocFile);
+                                            if (!StrUtil.isBlank(status)) {
+                                                presentFragment(new ProxyListActivity(status));
+                                            }
+                                        });
 
                             } else if (message.getDocumentName().toLowerCase().endsWith(".nekox-stickers.json")) {
 

@@ -82,6 +82,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.v2ray.ang.V2RayConfig;
+
 //import com.google.android.gms.common.api.Status;
 import com.google.common.primitives.Longs;
 //import com.google.firebase.appindexing.Action;
@@ -227,6 +229,8 @@ import tw.nekomimi.nekogram.ui.BottomBuilder;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.NekoXConfig;
 import tw.nekomimi.nekogram.settings.NekoSettingsActivity;
+import tw.nekomimi.nekogram.proxy.SubInfo;
+import tw.nekomimi.nekogram.proxy.SubManager;
 import tw.nekomimi.nekogram.utils.AlertUtil;
 //import tw.nekomimi.nekogram.utils.MonetHelper;
 import tw.nekomimi.nekogram.utils.ProxyUtil;
@@ -378,7 +382,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     Uri uri = intent.getData();
                     if (uri != null) {
                         String url = uri.toString().toLowerCase();
-                        isProxy = url.startsWith("tg:proxy") || url.startsWith("tg://proxy") || url.startsWith("tg:socks") || url.startsWith("tg://socks");
+                        isProxy = url.startsWith("tg:proxy") || url.startsWith("tg://proxy") || url.startsWith("tg:socks") || url.startsWith("tg://socks") ||
+                                url.startsWith(V2RayConfig.VMESS_PROTOCOL) ||
+                                url.startsWith(V2RayConfig.VMESS1_PROTOCOL) ||
+                                url.startsWith(V2RayConfig.SS_PROTOCOL) ||
+                                url.startsWith(V2RayConfig.SSR_PROTOCOL) ||
+                                url.startsWith(V2RayConfig.TROJAN_PROTOCOL);
                     }
                 }
             }
@@ -989,21 +998,21 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
         MediaController.getInstance().setBaseActivity(this, true);
 
-//        UIUtil.runOnIoDispatcher(() -> {
+        UIUtil.runOnIoDispatcher(() -> {
 //            ExternalGcm.checkUpdate(this);
-//            if (NekoConfig.autoUpdateSubInfo.Bool())
-//                for (SubInfo subInfo : SubManager.getSubList().find()) {
-//                    if (subInfo == null || !subInfo.enable) continue;
-//                    try {
-//                        subInfo.proxies = subInfo.reloadProxies();
-//                        subInfo.lastFetch = System.currentTimeMillis();
-//                        SubManager.getSubList().update(subInfo, true);
-//                        SharedConfig.reloadProxyList();
-//                    } catch (IOException allTriesFailed) {
-//                        FileLog.e(allTriesFailed);
-//                    }
-//                }
-//        }, 4000);
+            if (NekoConfig.autoUpdateSubInfo.Bool())
+                for (SubInfo subInfo : SubManager.getSubList().find()) {
+                    if (subInfo == null || !subInfo.enable) continue;
+                    try {
+                        subInfo.proxies = subInfo.reloadProxies();
+                        subInfo.lastFetch = System.currentTimeMillis();
+                        SubManager.getSubList().update(subInfo, true);
+                        SharedConfig.reloadProxyList();
+                    } catch (IOException allTriesFailed) {
+                        FileLog.e(allTriesFailed);
+                    }
+                }
+        }, 4000);
         //FileLog.d("UI create time = " + (SystemClock.elapsedRealtime() - ApplicationLoader.startTime));
 //        ApplicationLoader.startAppCenter(this);
         if (updateLayout != null) {
