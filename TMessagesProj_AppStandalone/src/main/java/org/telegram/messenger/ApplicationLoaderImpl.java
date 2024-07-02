@@ -86,11 +86,11 @@ public class ApplicationLoaderImpl extends ApplicationLoader {
 
     @Override
     public boolean showUpdateAppPopup(Context context, TLRPC.TL_help_appUpdate update, int account) {
-        try {
-            (new UpdateAppAlertDialog(context, update, account)).show();
-        } catch (Exception e) {
-            FileLog.e(e);
-        }
+        // try {
+        //     (new UpdateAppAlertDialog(context, update, account)).show();
+        // } catch (Exception e) {
+        //     FileLog.e(e);
+        // }
         return true;
     }
 
