@@ -5441,46 +5441,46 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 //        if (!force && BuildVars.DEBUG_VERSION || !force && !BuildVars.CHECK_UPDATES) {
 //            return;
 //        }
-        if (!force && Math.abs(System.currentTimeMillis() - SharedConfig.lastUpdateCheckTime) < MessagesController.getInstance(0).updateCheckDelay * 1000) {
-            return;
-        }
-        final int accountNum = currentAccount;
-        if (progress != null) progress.init();
-        UpdateHelper.getInstance().checkNewVersionAvailable((res, error) -> {
-            SharedConfig.lastUpdateCheckTime = System.currentTimeMillis();
-            SharedConfig.saveConfig();
-            AndroidUtilities.runOnUIThread(() -> {
-                if (res != null) {
-                    SharedConfig.setNewAppVersionAvailable(res);
-                    if (res.can_not_skip) {
-                        showUpdateActivity(accountNum, res, false);
-                    } else {
-                        drawerLayoutAdapter.notifyDataSetChanged();
-                        ApplicationLoader.applicationLoaderInstance.showUpdateAppPopup(LaunchActivity.this, res, accountNum);
-                    }
-                } else {
-                    if (force) {
-                        BaseFragment fragment = getLastFragment();
-                        if (fragment != null) {
-                            if (error == null) {
-                                BulletinFactory.of(fragment).createSimpleBulletin(R.raw.chats_infotip, LocaleController.getString(R.string.YourVersionIsLatest)).show();
-                            } else {
-                                AlertsCreator.createSimpleAlert(this, LocaleController.getString("ErrorOccurred", R.string.ErrorOccurred) + "\n" + error).show();
-                            }
-                        }
-                    }
-                    SharedConfig.setNewAppVersionAvailable(null);
-                    drawerLayoutAdapter.notifyDataSetChanged();
-                }
-                NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                if (progress != null) {
-                    progress.end();
-                }
-            });
-        });
-        if (progress != null) {
-            progress.init();
-        }
+        // if (!force && Math.abs(System.currentTimeMillis() - SharedConfig.lastUpdateCheckTime) < MessagesController.getInstance(0).updateCheckDelay * 1000) {
+        //     return;
+        // }
+        // final int accountNum = currentAccount;
+        // if (progress != null) progress.init();
+        // UpdateHelper.getInstance().checkNewVersionAvailable((res, error) -> {
+        //     SharedConfig.lastUpdateCheckTime = System.currentTimeMillis();
+        //     SharedConfig.saveConfig();
+        //     AndroidUtilities.runOnUIThread(() -> {
+        //         if (res != null) {
+        //             SharedConfig.setNewAppVersionAvailable(res);
+        //             if (res.can_not_skip) {
+        //                 showUpdateActivity(accountNum, res, false);
+        //             } else {
+        //                 drawerLayoutAdapter.notifyDataSetChanged();
+        //                 ApplicationLoader.applicationLoaderInstance.showUpdateAppPopup(LaunchActivity.this, res, accountNum);
+        //             }
+        //         } else {
+        //             if (force) {
+        //                 BaseFragment fragment = getLastFragment();
+        //                 if (fragment != null) {
+        //                     if (error == null) {
+        //                         BulletinFactory.of(fragment).createSimpleBulletin(R.raw.chats_infotip, LocaleController.getString(R.string.YourVersionIsLatest)).show();
+        //                     } else {
+        //                         AlertsCreator.createSimpleAlert(this, LocaleController.getString("ErrorOccurred", R.string.ErrorOccurred) + "\n" + error).show();
+        //                     }
+        //                 }
+        //             }
+        //             SharedConfig.setNewAppVersionAvailable(null);
+        //             drawerLayoutAdapter.notifyDataSetChanged();
+        //         }
+        //         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+        //         if (progress != null) {
+        //             progress.end();
+        //         }
+        //     });
+        // });
+        // if (progress != null) {
+        //     progress.init();
+        // }
     }
 
     public Dialog showAlertDialog(AlertDialog.Builder builder) {
